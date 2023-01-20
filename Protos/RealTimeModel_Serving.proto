@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package AMMSgRPC_proto;
+
+service ModelServingService {
+  rpc RealTimeDetect (ImageDataPacket) returns (ClassResult);
+}
+
+message ImageDataPacket
+{
+	string Name = 1;
+	int32 LayerNum = 2;
+	bytes Datas = 3;
+}
+
+message ClassResult {
+    repeated int32 PartiallyDeposited = 1;
+    repeated int32 PartiallyDepositedProb = 2;
+    repeated int32 Swelling = 3;
+    repeated int32 SwellingProb= 4;
+    repeated int32 BladeDamage = 5;
+    repeated int32 BladeDamageProb = 6;
+    repeated int32 Overlapped = 7;
+    repeated int32 OverlappedProb = 8;
+}

@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+ClassificationModels/
+RealTimeModel_Serving_pb2.py
+RealTimeModel_Serving_pb2_grpc.py
+
 # Distribution / packaging
 .Python
 build/
