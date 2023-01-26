@@ -22,23 +22,15 @@ class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServing
         # 디비명을 가지고 이미지 다운로드
         print("complete download images")
         # 다운로드 후 저장된 사진들의 디렉토리 경로를 전달
-        partially_deposited_layers, partially_deposited_prob_list, \
-        swelling_layer, swelling_prob_list, \
-        blade_damage_layers, blade_damage_prob_list, \
-        overlapped_layer, overlapped_prob_list = Classifier_ML.ClassifyData(dir_path)
+
+        result_class, result_percent = Classifier_ML.ClassifyData(img)
 
         # After Classification, deliver to grpc_result object
-        result = RealTimeModel_Serving_pb2.ClassResult()
-        result.PartiallyDeposited.extend(partially_deposited_layers)
-        result.PartiallyDepositedProb.extend(partially_deposited_prob_list)
-        result.Swelling.extend(swelling_layer)
-        result.SwellingProb.extend(swelling_prob_list)
-        result.BladeDamage.extend(blade_damage_layers)
-        result.BladeDamageProb.extend(blade_damage_prob_list)
-        result.Overlapped.extend(overlapped_layer)
-        result.OverlappedProb.extend(overlapped_prob_list)
+        predict_result = RealTimeModel_Serving_pb2.PredictResult()
+        predict_result.ClassResult = result_class
+        predict_result.ClassReusltPercent = result_percent
 
-        return result
+        return predict_result
 
 
 

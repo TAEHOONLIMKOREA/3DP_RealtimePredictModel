@@ -26,7 +26,7 @@ SecondClassification_class = ['Normal', 'Blade Damage']
 
 
 
-def ClassifyData(layerNum, img):
+def ClassifyData(img):
     # 데이터 로딩
     print("complete image loading")
 

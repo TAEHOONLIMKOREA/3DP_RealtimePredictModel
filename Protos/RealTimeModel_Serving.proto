@@ -14,12 +14,6 @@ message ImageDataPacket
 }
 
 message PredictResult {
-    repeated int32 PartiallyDeposited = 1;
-    repeated int32 PartiallyDepositedProb = 2;
-    repeated int32 Swelling = 3;
-    repeated int32 SwellingProb= 4;
-    repeated int32 BladeDamage = 5;
-    repeated int32 BladeDamageProb = 6;
-    repeated int32 Overlapped = 7;
-    repeated int32 OverlappedProb = 8;
+    string ClassResult = 1;
+    int32 ClassReusltPercent = 2;
 }
