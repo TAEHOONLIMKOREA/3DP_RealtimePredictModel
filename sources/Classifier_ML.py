@@ -1,9 +1,4 @@
-import matplotlib.pyplot as plt
 import numpy as np
-import tkinter
-import random
-import Classifier_ML
-from tkinter import filedialog
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -15,15 +10,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.models import Model
 from keras.models import load_model
-import data_processor as dp
-
-FirstClassification_class = ['Normal', 'Abnormal']
-SecondClassification_class = ['Normal', 'Blade Damage']
-
-
-
-
-
+from sources import data_processor as dp
 
 
 def ClassifyData(img):

@@ -3,11 +3,18 @@ syntax = "proto3";
 package AMMSgRPC_proto;
 
 service RealTimeModelServing{
+  rpc ClientSignalService (Message) returns (Message);
+
   rpc DetectDefect (ImageDataPacket) returns (PredictResult);
 }
 
-message ImageDataPacket
-{
+message Message {
+	string UserID = 1;
+	string UserMessage =2;
+}
+
+
+message ImageDataPacket {
 	string Name = 1;
 	int32 LayerNum = 2;
 	bytes Datas = 3;
