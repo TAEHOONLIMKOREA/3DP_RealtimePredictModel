@@ -3,20 +3,23 @@ import RealTimeModel_Serving_pb2
 import RealTimeModel_Serving_pb2_grpc
 from concurrent import futures
 import Classifier_ML
+import cv2
+import numpy as np
 
 
 
-class RealTimeDetectDefectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeDetectDefectServicer):
+class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServingServicer):
     def DefectDetection(self, request, context):
         # 작동 메세지 출력
         print("Check Connection")
 
         # 현재는 dbName에 디비이름 대신 사진파일 저장경로가 들어가 있음
-        db_name = request.DBName
+        data = request.Datas
+        encoded_img = np.fromstring(data, dtype=np.uint8)
+        img = cv2.imdecode(encoded_img, cv2.IMREAD_COLOR)
+
 
         # 디비명을 가지고 이미지 다운로드
-        # mongo_manager = mm.MongoManager()
-        dir_path = mongo_manager.GetVisionImage(db_name)
         print("complete download images")
         # 다운로드 후 저장된 사진들의 디렉토리 경로를 전달
         partially_deposited_layers, partially_deposited_prob_list, \
@@ -42,7 +45,7 @@ class RealTimeDetectDefectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeDetect
 
 def StartServer() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
-    RealTimeModel_Serving_pb2_grpc.add_RealTimeDetectDefectServicer_to_server(RealTimeDetectDefectServicer(), server)
+    RealTimeModel_Serving_pb2_grpc.add_RealTimeModelServingServicer_to_server(RealTimeDetectServicer(), server)
     print("server started!")
     server.add_insecure_port('[::]:50052')
     server.start()

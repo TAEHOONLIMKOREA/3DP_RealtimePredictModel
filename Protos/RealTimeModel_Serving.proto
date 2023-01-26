@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package AMMSgRPC_proto;
 
-service RealTimeDetectDefect{
-  rpc RealTimeDetect (ImageDataPacket) returns (ClassResult);
+service RealTimeModelServing{
+  rpc DetectDefect (ImageDataPacket) returns (PredictResult);
 }
 
 message ImageDataPacket
@@ -13,7 +13,7 @@ message ImageDataPacket
 	bytes Datas = 3;
 }
 
-message ClassResult {
+message PredictResult {
     repeated int32 PartiallyDeposited = 1;
     repeated int32 PartiallyDepositedProb = 2;
     repeated int32 Swelling = 3;
