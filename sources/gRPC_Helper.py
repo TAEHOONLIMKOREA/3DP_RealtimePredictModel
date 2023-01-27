@@ -10,7 +10,7 @@ import numpy as np
 
 class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServingServicer):
     # KIOP와 통신 확인용
-    def ClientSignalService(self, request, context):
+    def ConnectCheck(self, request, context):
         message = request.UserMessage
         # 현재 상태에서는 기본적으로 Echo메세지 역할을 하고
         # 특정 단어(signal)를 수신받았을 시 동작을 수행한다.
@@ -25,13 +25,14 @@ class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServing
         return resultMessage
 
 
-    def DefectDetection(self, request, context):
+    def DetectDefect(self, request, context):
         # 작동 메세지 출력
         print("Check Connection")
 
         # 현재는 dbName에 디비이름 대신 사진파일 저장경로가 들어가 있음
         data = request.Datas
-        encoded_img = np.fromstring(data, dtype=np.uint8)
+        encoded_img = np.frombuffer(data, dtype=np.uint8)
+        # encoded_img = np.asarray(data)
         img = cv2.imdecode(encoded_img, cv2.IMREAD_COLOR)
 
 

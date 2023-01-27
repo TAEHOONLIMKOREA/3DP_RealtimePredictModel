@@ -3,7 +3,7 @@ syntax = "proto3";
 package AMMSgRPC_proto;
 
 service RealTimeModelServing{
-  rpc ClientSignalService (Message) returns (Message);
+  rpc ConnectCheck (Message) returns (Message);
 
   rpc DetectDefect (ImageDataPacket) returns (PredictResult);
 }
