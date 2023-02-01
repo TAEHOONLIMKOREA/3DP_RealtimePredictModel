@@ -11,9 +11,13 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.models import Model
 from keras.models import load_model
 from sources import data_processor as dp
+import cv2
 
 
 def ClassifyData(img):
+    # 모델에 들어가는 사이즈로 변경
+    img = cv2.resize(img, dsize=(540, 510), interpolation=cv2.INTER_AREA)
+
     # 데이터 로딩
     print("complete image loading")
 
@@ -26,7 +30,7 @@ def ClassifyData(img):
     print("start prediction!")
 
     # 1차 모델 로딩
-    model_binary = load_model('model_predict/model_220811_dense4_Binaryization_processed_epoch3')
+    model_binary = load_model('ClassificationModels/model_220811_dense4_Binaryization_processed_epoch3')
     model_binary.summary()
 
     # 1차 예측 ( 1차 분류를 위한 라벨(predictions 생성) )
@@ -53,7 +57,7 @@ def ClassifyData(img):
         img_edge_processed = img_edge_processed / 255
 
         # 2차 모델 로딩
-        model_categorical = load_model('model_predict/model_221109_dense4_EdgeDetection_categorical_epoch6_batch16')
+        model_categorical = load_model('ClassificationModels/model_221109_dense4_EdgeDetection_categorical_epoch6_batch16')
         model_categorical.summary()
 
         # 2차 예측 ( 2차 분류를 위한 라벨(predictions 생성) )
