@@ -34,7 +34,8 @@ class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServing
         encoded_img = np.fromstring(data, dtype=np.uint8)
         # encoded_img = np.asarray(data)
         img = cv2.imdecode(encoded_img, cv2.IMREAD_COLOR)
-
+        #  grayscale 변환
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         # 디비명을 가지고 이미지 다운로드
         print("complete download images")

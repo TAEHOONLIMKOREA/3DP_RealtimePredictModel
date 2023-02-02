@@ -17,26 +17,28 @@ import cv2
 def ClassifyData(img):
     # 모델에 들어가는 사이즈로 변경
     img = cv2.resize(img, dsize=(540, 510), interpolation=cv2.INTER_AREA)
-
     # 데이터 로딩
     print("complete image loading")
 
     # 데이터 가공 ( 이진화 )
-    images_binary_processed = dp.Processing_Binaryization(img)
+    image_binary_processed = dp.Processing_Binaryization(img)
     print("complete image processing")
 
     # 데이터 정규화 ( 0~1사이로 변환 )
-    images_binary_processed = images_binary_processed / 255
+    image_binary_processed = image_binary_processed / 255
     print("start prediction!")
+
+    # Model의 Input이 3차원 배열(이미지들의 집합)이기 때문에 한장을 분류하더라도 배열로 만들어줘야함.
+    img_array = np.array([image_binary_processed])
 
     # 1차 모델 로딩
     model_binary = load_model('ClassificationModels/model_220811_dense4_Binaryization_processed_epoch3')
     model_binary.summary()
 
     # 1차 예측 ( 1차 분류를 위한 라벨(predictions 생성) )
-    predictions1 = model_binary.predict(images_binary_processed)
+    predictions1 = model_binary.predict(image_binary_processed)
 
-    print("prediction count: " + str(len(predictions1)))
+    print("prediction count: " + str(len(img_array)))
 
     # 1차 분류
     # data_group1 = np.empty((0, 510, 540), dtype=np.uint8)
