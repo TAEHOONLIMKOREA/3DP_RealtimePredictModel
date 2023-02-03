@@ -29,25 +29,21 @@ def ClassifyData(img):
     print("start prediction!")
 
     # Model의 Input이 3차원 배열(이미지들의 집합)이기 때문에 한장을 분류하더라도 배열로 만들어줘야함.
-    img_array = np.array([image_binary_processed])
+    input_img_array = np.array([image_binary_processed])
 
     # 1차 모델 로딩
     model_binary = load_model('ClassificationModels/model_220811_dense4_Binaryization_processed_epoch3')
-    model_binary.summary()
+    # model_binary.summary()
 
-    # 1차 예측 ( 1차 분류를 위한 라벨(predictions 생성) )
-    predictions1 = model_binary.predict(image_binary_processed)
+    #     # 1차 예측 ( 1차 분류를 위한 라벨(predictions 생성) )
+    first_predictions = model_binary.predict(input_img_array)
 
-    print("prediction count: " + str(len(img_array)))
+    print("prediction count: " + str(len(first_predictions)))
 
     # 1차 분류
-    # data_group1 = np.empty((0, 510, 540), dtype=np.uint8)
-    # data_group2 = np.empty((0, 510, 540), dtype=np.uint8)
-
-
 
     # 예측값 정수화
-    predicted_label = int(predictions1)
+    predicted_label = np.argmax(first_predictions[0])
     global result_class
     global result_percent
 
@@ -58,33 +54,36 @@ def ClassifyData(img):
         # 데이터 정규화 ( 0~1사이로 변환 )
         img_edge_processed = img_edge_processed / 255
 
+        # Model의 Input규격이 3차원 배열(이미지들의 집합)이기 때문에 한장을 분류하더라도 배열로 만들어줘야함.
+        input_img_array2 = np.array([img_edge_processed])
+
         # 2차 모델 로딩
         model_categorical = load_model('ClassificationModels/model_221109_dense4_EdgeDetection_categorical_epoch6_batch16')
-        model_categorical.summary()
+        # model_categorical.summary()
 
         # 2차 예측 ( 2차 분류를 위한 라벨(predictions 생성) )
-        second_prediction = model_categorical.predict(img_edge_processed)
+        second_prediction = model_categorical.predict(input_img_array2)
         print(second_prediction.shape)
         print(second_prediction)
 
-        predicted_label = np.argmax(second_prediction)
+        predicted_label = np.argmax(second_prediction[0])
         if (predicted_label == 0):
             result_class = "Normal"
-            result_percent = int(second_prediction[0] * 100)
+            result_percent = int(second_prediction[0][0] * 100)
         elif (predicted_label == 1):
             result_class = "Swelling"
-            result_percent = int(second_prediction[1] * 100)
+            result_percent = int(second_prediction[0][1] * 100)
         elif (predicted_label == 2):
             result_class = "BladeDamage"
-            result_percent = int(second_prediction[2] * 100)
+            result_percent = int(second_prediction[0][2] * 100)
         elif (predicted_label == 3):
             result_class = "Overlapped"
-            result_percent = int(second_prediction[3] * 100)
+            result_percent = int(second_prediction[0][3] * 100)
 
     # 첫 번째 분류에서 라벨이 1로 나온 경우
     elif (predicted_label == 1):
         result_class = "PartiallyDeposited"
-        result_percent = int(predictions1.mean() * 100)
+        result_percent = int(first_predictions[0].mean() * 100)
 
 
     return result_class, result_percent
