@@ -21,6 +21,7 @@ message ImageDataPacket {
 }
 
 message PredictResult {
-    string ClassResult = 1;
-    int32 ClassReusltPercent = 2;
+	int32 LayerNum = 1;
+  string ClassResult = 2;
+  int32 ClassReusltPercent = 3;
 }

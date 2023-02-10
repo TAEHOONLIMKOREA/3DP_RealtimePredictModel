@@ -45,8 +45,10 @@ class RealTimeDetectServicer(RealTimeModel_Serving_pb2_grpc.RealTimeModelServing
 
         # After Classification, deliver to grpc_result object
         predict_result = RealTimeModel_Serving_pb2.PredictResult()
+        predict_result.LayerNum = request.LayerNum
         predict_result.ClassResult = result_class
         predict_result.ClassReusltPercent = result_percent
+
 
         return predict_result
 
